@@ -19,13 +19,13 @@ def load_data():
 
 
 def road_serface_detect(data, z):
-    z_range = max(z) - min(z)
-    min_alt = np.median(z) - 0.04 * z_range
-    max_alt = np.median(z) + 0.02 * z_range
+    min_alt = np.median(z) - 2
+    max_alt = np.median(z) + 0.3
     road_data = []
     for d in data:
         if min_alt <= d[2] <= max_alt:
             road_data.append(d)
+    print(len(road_data))
     return road_data
 
 
@@ -47,16 +47,21 @@ if __name__ == '__main__':
 
     fig = plt.figure(figsize=(50, 29.4))
     ax = plt.axes(projection='3d')
+    ax.set_xlim(min(x), max(x))
+    ax.set_ylim(min(y), max(y))
+    ax.set_zlim3d(200, 234)
     ax.plot(x, y, z, ',')
     plt.savefig('test99.png')
 
 
     fig = plt.figure(figsize=(50, 29.4))
     ax = plt.axes(projection='3d')
-    ax.set_xlim(min(road_x), max(road_x))
-    ax.set_ylim(min(road_y), max(road_y))
-    ax.set_zlim3d(230, 250)
-    ax.plot(x, y, z, ',')
+    rangex = max(road_x) - min(road_x)
+    rangey = max(road_y) - min(road_y)
+    ax.set_xlim(min(road_x), max(road_x) - 0.1*rangex)
+    ax.set_ylim(min(road_y)+0.4*rangey, max(road_y) - 0.8*rangey)
+    ax.set_zlim3d(200, 234)
+    ax.plot(road_x, road_y, road_z, ',')
     plt.savefig('test2.png')
 
     lane_data = lane_detect(data)
